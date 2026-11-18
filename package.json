@@ -11,7 +11,8 @@
     "test:agent": "tsx scripts/check-agent.ts",
     "build:artifact": "node scripts/build-artifact.mjs",
     "test:brain": "tsx scripts/check-brain.ts",
-    "test": "npm run typecheck && npm run test:engine && npm run test:brain && npm run test:agent"
+    "test": "npm run typecheck && npm run test:engine && npm run test:brain && npm run test:agent",
+    "build:pages": "node scripts/build-artifact.mjs _site/index.html --standalone"
   },
   "engines": {
     "node": ">=22"

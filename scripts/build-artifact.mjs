@@ -1,12 +1,16 @@
 // Bundles the same app into one self-contained page that runs as a Claude artifact.
-// Usage: node scripts/build-artifact.mjs [output.html]
+// Usage: node scripts/build-artifact.mjs [output.html] [--standalone]
+// --standalone writes a complete web page (doctype, head, body) for static hosts such as GitHub Pages.
 import { build } from 'esbuild';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const out = resolve(process.argv[2] ?? resolve(root, 'artifact/dist/orvane-scout.html'));
+const args = process.argv.slice(2);
+const standalone = args.includes('--standalone');
+const outArg = args.find((a) => !a.startsWith('--'));
+const out = resolve(outArg ?? resolve(root, 'artifact/dist/orvane-scout.html'));
 
 const result = await build({
   entryPoints: [resolve(root, 'artifact/entry.tsx')],
@@ -43,6 +47,23 @@ ${frame}</style>
 ${js}
 </script>
 `;
+// A static host serves the file as it is, so it needs the document skeleton the artifact viewer would add.
+const page = standalone
+  ? `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f5">
+<meta name="description" content="Scout, an AI sourcing agent inside Orvane, a concept B2B marketplace. All data is simulated.">
+<link rel="icon" href="data:image/svg+xml;base64,${Buffer.from(readFileSync(resolve(root, 'app/icon.svg'))).toString('base64')}">
+<style>html, body { margin: 0; }</style>
+</head>
+<body>
+${html}</body>
+</html>
+`
+  : html;
 mkdirSync(dirname(out), { recursive: true });
-writeFileSync(out, html);
-console.log(`Wrote ${out} (${Math.round(html.length / 1024)} KB)`);
+writeFileSync(out, page);
+console.log(`Wrote ${out} (${Math.round(page.length / 1024)} KB)`);

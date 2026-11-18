@@ -20,6 +20,14 @@ npm test           # typecheck, engine figures, language checks, live-agent wiri
 npm run build      # production build
 ```
 
+## Put it on GitHub Pages (free, no server)
+
+`.github/workflows/pages.yml` builds the self-contained page and publishes it on every push to `main`. Turn it on once: in the repository, Settings > Pages > Source > **GitHub Actions**. The site appears at `https://<owner>.github.io/<repo>/`.
+
+Pages serves files only, so there is no live model there: Scout answers with its built-in layer, which covers the whole journey. Use Vercel if you want the optional live model. Pages needs a public repository on a free GitHub plan.
+
+To build the same page locally: `npm run build:pages` (writes `_site/index.html`).
+
 ## Put it on Vercel
 
 **From GitHub.** Push this folder to a repository, then in Vercel choose Add New > Project and import it. Vercel detects Next.js; no settings to change.
