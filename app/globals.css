@@ -1374,3 +1374,19 @@ textarea.draft { border-color: var(--accent); box-shadow: 0 0 0 3px var(--orange
 .demand-chart.tone-down .line { stroke: var(--red); }
 .demand-chart.tone-down .area { fill: rgba(210, 18, 4, 0.06); }
 .demand-chart.tone-down .dot { fill: var(--red); }
+
+/* Hover on choice controls: a light Orvane orange, a step lighter than the selected state */
+:root { --orange-wash: #fff6ef; --orange-wash-line: #ffe1c9; }
+.toggle-chip:hover:not(.on),
+.chip:hover,
+.pick:hover,
+.option:hover,
+.opt:hover:not(.on),
+.ask-examples button:hover,
+.splitopt:hover:not(.on),
+.presets button:hover:not(.on),
+.pop-row:hover:not(.on):not(.off),
+.pop-grid button:hover { background: var(--orange-wash); border-color: var(--orange-wash-line); color: var(--ink-2); }
+.opt:hover:not(.on) .code { background: var(--card); color: var(--accent-ink); }
+.pop-row:hover:not(.on):not(.off) .mark { border-color: var(--orange-line); }
+.pick-card:hover, .cat:hover { border-color: var(--orange-wash-line); }
